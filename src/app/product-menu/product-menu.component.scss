@@ -16,16 +16,16 @@
   z-index: 1;
 }
 
-.menu-spacer {
-  flex: 1 1 auto;
-}
-
 .menu-icon {
   padding: 0 14px;
 }
 
+.menu-back-spacer {
+  flex: 1 1 auto;
+}
 
-.fill-remaining-space {
-     display: flex;
-     flex-direction: row;
+
+.menu-space {
+  flex: 1 1 auto;
+  text-align: center;
 }

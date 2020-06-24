@@ -18,7 +18,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ProductCartComponent } from './product-cart/product-cart.component';
-
 @NgModule({
   declarations: [
     AppComponent,

@@ -26,51 +26,39 @@
       <button mat-icon-button class="web-title" (click)="urlToggle('/product-dashboard')" *ngIf='webTitle.length>0' >
         {{webTitle}}
       </button>
-
-    
-
-      <span class="menu-spacer"></span>
+      <span class="menu-back-spacer"></span>
       <button mat-icon-button (click)="urlToggle('/product-cart')">
         <mat-icon>shopping_cart</mat-icon>
       </button>
+
     </mat-toolbar-row>
-    <mat-toolbar-row style="max-height:30px">
-      <button  class="fill-remaining-space" mat-icon-button [matMenuTriggerFor]="menu">
-          menu
-      </button>
-      <button  class="fill-remaining-space" mat-icon-button [matMenuTriggerFor]="menu">
-        menu
-      </button>
-      <button  class="fill-remaining-space" mat-icon-button [matMenuTriggerFor]="menu">
-          menu
-      </button>
+
+    <mat-toolbar-row style="max-height:50px">
+
+      <span *ngFor="let menu of toolBarMenu; let i = index" class="menu-space">
+        <button mat-icon-button [matMenuTriggerFor]="menud">
+          <span>{{menu.parent}}</span>
+        </button>
+        <mat-menu #menud="matMenu" [overlapTrigger]="false">
+          <span *ngFor="let childMenu of menu.child; let i = index">
+              <button  mat-menu-item>
+                <mat-icon *ngIf="childMenu.icon!=null">{{childMenu.icon}}</mat-icon>
+                <span>{{childMenu.menu}}</span>
+              </button>
+          </span>
+        </mat-menu>
+      </span>
+
     </mat-toolbar-row>
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+    
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
       <!-- <div>
         <button mat-raised-button color="primary" (click)="onSetTheme('default-theme')">Default</button>
         <button mat-raised-button color="primary" (click)="onSetTheme('dark-theme')">Dark</button>
         <button mat-raised-button color="primary" (click)="onSetTheme('light-theme')">Light</button>
       </div> -->
-    </mat-toolbar>
-    <router-outlet></router-outlet>
-  </mat-sidenav-content>
-</mat-sidenav-container>
-
-<!-- Defining mat menu -->
-<mat-menu #menu="matMenu" [overlapTrigger]="false">
-  <button mat-menu-item>
-    <mat-icon>home</mat-icon>
-    <span>Home</span>
-  </button>
-  <button mat-menu-item>
-    <mat-icon>people_outline</mat-icon>
-    <span>Connecting</span>
-  </button>
-  <button mat-menu-item>
-    <mat-icon>videocam</mat-icon>
-    <span>Let's talk</span>
-  </button>
-  <button mat-menu-item>
-    <mat-icon>exit_to_app</mat-icon>
-    <span>Logout</span>
-  </button>
-</mat-menu>

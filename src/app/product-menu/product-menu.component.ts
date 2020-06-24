@@ -33,6 +33,10 @@ export class ProductMenuComponent {
     this.router.navigate([link]);
   }
 
+  clickHandler(item: string) {
+    alert(item);
+  }
+  
   webTitle='';
   webImage='../assets/test_hdd.png';
   webImageCss={
@@ -40,5 +44,22 @@ export class ProductMenuComponent {
   }
   productDashboard='Dash board';
   productCart='Cart';
+
+  toolBarMenu =[
+    {
+      parent:'parent',
+      child:[
+        {menu:'menu1'},
+        {menu:'menu2'}
+      ]
+    },
+    {
+      parent:'parent1',
+      child:[
+        {menu:'menu1',icon:'people_outline'},
+        {menu:'menu2'}
+      ]
+    }
+  ]
 
 }
