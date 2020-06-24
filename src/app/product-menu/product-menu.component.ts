@@ -4,6 +4,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Observable } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { MenuConstants } from '../app-constants/appConstants';
 
 @Component({
   selector: 'app-product-menu',
@@ -20,7 +21,10 @@ export class ProductMenuComponent {
       shareReplay()
     );
 
-  constructor(private breakpointObserver: BreakpointObserver, private overlayContainer:OverlayContainer, private router:Router) {}
+  constructor(private breakpointObserver: BreakpointObserver,
+      private overlayContainer:OverlayContainer,
+      private router:Router,
+      private menuConstants: MenuConstants) {}
   
   @HostBinding('class') componentCssClass;
 
@@ -45,21 +49,6 @@ export class ProductMenuComponent {
   productDashboard='Dash board';
   productCart='Cart';
 
-  toolBarMenu =[
-    {
-      parent:'parent',
-      child:[
-        {menu:'menu1'},
-        {menu:'menu2'}
-      ]
-    },
-    {
-      parent:'parent1',
-      child:[
-        {menu:'menu1',icon:'people_outline'},
-        {menu:'menu2'}
-      ]
-    }
-  ]
+  toolBarMenu = this.menuConstants.toolBarMenu.menu;
 
 }

@@ -13,14 +13,7 @@ export class ProductDashboardComponent {
   cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
     map(({ matches }) => {
       if (matches) {
-        return [
-          { product: 'product 1',content: 'test', cols: 2, rows: 1 },
-          { product: 'product 2', cols: 2, rows: 1 },
-          { product: 'product 3', cols: 2, rows: 1 },
-          { product: 'product 4', cols: 2, rows: 1 }, 
-          { product: 'product 5', cols: 2, rows: 1 },
-          { product: 'product 6', cols: 2, rows: 1 }
-        ];
+        return [{ cols: 2, rows: 1 }]
       }
 
       return [

@@ -28,4 +28,37 @@
 .menu-space {
   flex: 1 1 auto;
   text-align: center;
+  
+}
+.search-full-width{
+  width: 100%;
+  left: 250px;
+}
+
+@media (max-width:1080px) {
+  .search-full-width{
+    width: 85%;
+    left: 150px;
+  }
+}
+
+@media (max-width:950px) {
+  .search-full-width{
+    width: 80%;
+    left: 150px;
+  }
+}
+
+@media (max-width:750px) {
+  .search-full-width{
+    width: 60%;
+    left: 120px;
+  }
+}
+
+@media (max-width:610px) {
+  .search-full-width{
+    width: 50%;
+    left: 60px;
+  }
 }

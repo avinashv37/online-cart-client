@@ -17,7 +17,10 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatCardModule } from '@angular/material/card';
 import { MatMenuModule } from '@angular/material/menu';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { FormsModule }   from '@angular/forms';
 import { ProductCartComponent } from './product-cart/product-cart.component';
+import {MatInputModule} from '@angular/material/input';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,7 +42,9 @@ import { ProductCartComponent } from './product-cart/product-cart.component';
     MatGridListModule,
     MatCardModule,
     MatMenuModule,
-    DragDropModule
+    MatInputModule,
+    DragDropModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
