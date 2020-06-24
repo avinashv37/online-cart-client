@@ -1,0 +1,76 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'" [opened]="(isHandset$ | async) === true">
+    <mat-toolbar [color]="themeColor">Take A Look</mat-toolbar>
+    <mat-nav-list>
+      
+      <a mat-list-item href="/product-dashboard">{{productDashboard}}</a>
+      <a mat-list-item href="/product-cart">{{productCart}}</a>
+      <!-- <a mat-list-item href="#">Link 3</a> -->
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+    <mat-toolbar-row>
+
+      <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="drawer.toggle()" *ngIf="isHandset$">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+     
+      <div>
+        <button class="navbar-item" aria-label="Web Image" mat-icon-button (click)="urlToggle('/product-dashboard')" *ngIf='webTitle.length==0'>
+          <img [ngStyle]="webImageCss" [src]="webImage"/>
+        </button>
+      </div>
+
+      <button mat-icon-button class="web-title" (click)="urlToggle('/product-dashboard')" *ngIf='webTitle.length>0' >
+        {{webTitle}}
+      </button>
+
+    
+
+      <span class="menu-spacer"></span>
+      <button mat-icon-button (click)="urlToggle('/product-cart')">
+        <mat-icon>shopping_cart</mat-icon>
+      </button>
+    </mat-toolbar-row>
+    <mat-toolbar-row style="max-height:30px">
+      <button  class="fill-remaining-space" mat-icon-button [matMenuTriggerFor]="menu">
+          menu
+      </button>
+      <button  class="fill-remaining-space" mat-icon-button [matMenuTriggerFor]="menu">
+        menu
+      </button>
+      <button  class="fill-remaining-space" mat-icon-button [matMenuTriggerFor]="menu">
+          menu
+      </button>
+    </mat-toolbar-row>
+      <!-- <div>
+        <button mat-raised-button color="primary" (click)="onSetTheme('default-theme')">Default</button>
+        <button mat-raised-button color="primary" (click)="onSetTheme('dark-theme')">Dark</button>
+        <button mat-raised-button color="primary" (click)="onSetTheme('light-theme')">Light</button>
+      </div> -->
+    </mat-toolbar>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
+<!-- Defining mat menu -->
+<mat-menu #menu="matMenu" [overlapTrigger]="false">
+  <button mat-menu-item>
+    <mat-icon>home</mat-icon>
+    <span>Home</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>people_outline</mat-icon>
+    <span>Connecting</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>videocam</mat-icon>
+    <span>Let's talk</span>
+  </button>
+  <button mat-menu-item>
+    <mat-icon>exit_to_app</mat-icon>
+    <span>Logout</span>
+  </button>
+</mat-menu>

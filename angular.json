@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "aot": true,
             "outputPath": "dist/online-cart-client",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -23,7 +24,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/custom-theme.scss",
+              "src/styles.scss"
             ],
             "scripts": []
           },
@@ -49,6 +51,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             }
@@ -83,7 +89,7 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -114,6 +120,16 @@
           }
         }
       }
-    }},
-  "defaultProject": "online-cart-client"
+    }
+  },
+  "defaultProject": "online-cart-client",
+  "cli": {
+    "defaultCollection": "@nativescript/schematics",
+    "analytics": false
+  },
+  "schematics": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  }
 }
