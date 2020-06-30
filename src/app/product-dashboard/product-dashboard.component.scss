@@ -19,3 +19,16 @@
 .dashboard-card-content {
   text-align: center;
 }
+
+input.cartQty{
+  width:50px;
+  height:20px;
+  border-radius:10px;
+  outline: none;
+}
+
+::ng-deep .mat-card{
+  transition: none !important;
+  box-shadow: none !important;
+  background:transparent;
+ }

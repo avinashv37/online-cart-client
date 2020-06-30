@@ -18,9 +18,10 @@
       </button>
      
       <div>
-        <button class="navbar-item" aria-label="Web Image" mat-icon-button (click)="urlToggle('/product-dashboard')" *ngIf='webTitle.length==0'>
-          <img [ngStyle]="webImageCss" [src]="webImage"/>
-        </button>
+        <!-- changing the button to a -->
+        <a class="navbar-item" aria-label="Web Image" mat-icon-button (click)="urlToggle('/product-dashboard')" *ngIf='webTitle.length==0'>
+          <img [ngStyle]="webImageCss" [src]="webImage">
+        </a>
       </div>
 
       <!-- Search bar -->

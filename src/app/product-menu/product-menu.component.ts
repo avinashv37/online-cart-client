@@ -44,7 +44,7 @@ export class ProductMenuComponent {
   webTitle='';
   webImage='../assets/test_hdd.png';
   webImageCss={
-    'height':'120px', 'width':'200px'
+    'height':'120px', 'width':'180px'
   }
   productDashboard='Dash board';
   productCart='Cart';

@@ -20,6 +20,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { FormsModule }   from '@angular/forms';
 import { ProductCartComponent } from './product-cart/product-cart.component';
 import {MatInputModule} from '@angular/material/input';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import {MatInputModule} from '@angular/material/input';
     MatMenuModule,
     MatInputModule,
     DragDropModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

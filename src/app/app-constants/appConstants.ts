@@ -7,31 +7,116 @@ import { Injectable } from '@angular/core';
 
 export class MenuConstants {
   
+
+  cartProducts = new Array();
+
+  productListConfig={
+      addCartIcon:'add_shopping_cart',
+      removeCartIcon:'remove_shopping_cart'
+  }
+
   productList={
     products:[
       {
         name:'coconut oil',
         productId:10,
         category:'oil',
+        content:'wonderful product',
+        offer:'',
+        specialOffer:'',
         productType:'food',
-        image:''
-      }
+        image:'../assets/test_hdd.png',
+        price:0,
+        stock:false,
+      },
+        {
+        name:'coconut oil',
+        productId:11,
+        category:'oil',
+        content:'wonderful product',
+        offer:'',
+        specialOffer:'',
+        productType:'food',
+        image:'../assets/test_hdd.png',
+        price:0,
+        stock:false
+      },
+      {
+        name:'Noodle',
+        productId:12,
+        category:'Millet Noodle',
+        content:'wonderful product',
+        offer:'',
+        specialOffer:'',
+        productType:'food',
+        image:'../assets/test_hdd.png',
+        price:0,
+        stock:false
+        },
+      {
+        name:'coconut oil',
+        productId:13,
+        category:'oil',
+        content:'wonderful product',
+        offer:'',
+        specialOffer:'',
+        productType:'food',
+        image:'../assets/test_hdd.png',
+        price:0,
+        stock:false
+      },
+      {
+        name:'coconut oil',
+        productId:14,
+        category:'oil',
+        content:'wonderful product',
+        offer:'',
+        specialOffer:'',
+        productType:'food',
+        image:'../assets/test_hdd.png',
+        price:0,
+        stock:false
+    },
+    {
+      name:'coconut oil',
+      productId:14,
+      category:'oil',
+      content:'wonderful product',
+      offer:'',
+      specialOffer:'',
+      productType:'food',
+      image:'../assets/test_hdd.png',
+      price:0,
+      stock:false
+  },
+  {
+    name:'coconut oil',
+    productId:14,
+    category:'oil',
+    content:'wonderful product',
+    offer:'',
+    specialOffer:'',
+    productType:'food',
+    image:'../assets/test_hdd.png',
+    price:0,
+    stock:false
+}
     ]
   }
 
   toolBarMenu ={
     menu:[
       {
-        parent:'parent',
+        parent:'Millet',
         child:[
-          {menu:'menu1'},
+          {menu:'Millet Noodles'},
           {menu:'menu2'}
         ]
       },
       {
-        parent:'parent1',
+        parent:'Snacks',
         child:[
-          {menu:'menu1',icon:'people_outline'},
+          {menu:'chips',icon:'people_outline'},
           {menu:'menu2'}
         ]
       }

@@ -1,23 +1,31 @@
 <div class="grid-container">
-  <mat-grid-list cols="5" rowHeight="350px">
+  <mat-grid-list [cols]="gridCols" rowHeight="360px">
+    <span  *ngFor="let product of products; let i = index">
     <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
-      <mat-card class="dashboard-card">
+      <mat-card fxFlexFill class="dashboard-card">
         <mat-card-header>
           <mat-card-title>
-            {{card.product}}
-            <!-- <button mat-icon-button class="more-button" [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-              <mat-icon>more_vert</mat-icon>
-            </button>
-            <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item>Expand</button>
-              <button mat-menu-item>Remove</button>
-            </mat-menu> -->
+            {{product.name}}
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
-          <div>{{card.content}}</div>
+          <a>
+            <img mat-card-image [src]="product.image">
+          </a>
+          <mat-card-subtitle>{{product.content}}</mat-card-subtitle>
         </mat-card-content>
+        <mat-card-footer>
+          <span>Qty:   </span>
+            <button mat-icon-button (click)="addCart(i)">
+              <mat-icon>{{addCartIcon}}</mat-icon>
+            </button>
+            <input class="cartQty" type="number" [(ngModel)]="product.cartQty" min="0" max="15" (keyup)="checkInputValue($event)" />
+            <button mat-icon-button (click)="removeCart(i)">
+              <mat-icon>{{removeCartIcon}}</mat-icon>
+            </button>
+        </mat-card-footer>
       </mat-card>
     </mat-grid-tile>
+    </span>
   </mat-grid-list>
 </div>
