@@ -139,7 +139,9 @@ module.exports = env => {
     const config = {
         mode: production ? "production" : "development",
         context: appFullPath,
-        externals,
+        externals: {
+            'react': 'React'
+        },
         watchOptions: {
             ignored: [
                 appResourcesFullPath,

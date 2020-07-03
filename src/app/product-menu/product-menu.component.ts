@@ -42,9 +42,9 @@ export class ProductMenuComponent {
   }
   
   webTitle='';
-  webImage='../assets/test_hdd.png';
+  webImage='../assets/Organic_Logo.png';
   webImageCss={
-    'height':'120px', 'width':'180px'
+    'height':'120px', 'width':'160px'
   }
   productDashboard='Dash board';
   productCart='Cart';

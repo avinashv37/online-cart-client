@@ -12,59 +12,44 @@ import { Product } from '../shared-models/product.model';
 })
 export class ProductDashboardComponent implements OnInit {
   public products: Product[];
-
+  cartItem;
   ngOnInit() {
-
-    this.productService.sendProductRequest().subscribe((data: any[]) => {
+    this.productService.sendProductRequest()
+    .subscribe((data: Product[]) => {
       console.log(data);
-      this.products = data;
+      this.products = data;  
+      this.cartItem =this.productService.getCartProduct(); 
+      this.productService.syncItemQty(this.cartItem,this.products);
     });
-
+    this.products = this.productService.products;  
   }
-
-  /** Based on the screen size, switch from standard to one column per row */
-  gridCols=6;
   
-  cards = this.breakpointObserver.observe([Breakpoints.Handset,Breakpoints.Small,Breakpoints.XSmall,
-    Breakpoints.Medium,Breakpoints.Large,Breakpoints.XLarge]).pipe(
-    map(({ matches }) => {
-      const isHandset = this.breakpointObserver.isMatched(Breakpoints.Handset)
-      const isMedium = this.breakpointObserver.isMatched(Breakpoints.Medium);
-      const isXSmall = this.breakpointObserver.isMatched(Breakpoints.XSmall);
-      const isSmall = this.breakpointObserver.isMatched(Breakpoints.Small);
-
-      if (isSmall) {
-        this.gridCols=6;
-        return [{ cols: 2, rows: 1 }]
-      }else if(isHandset || isXSmall){
-        this.gridCols=6;
-        return [{ cols: 3, rows: 1 }]
-      }else if(isMedium){
-        this.gridCols=4;
-        return [{ cols: 1, rows: 1 }]
-      }else{
-        this.gridCols=6;
-        return [{ cols: 1, rows: 1 }];
-      }
-    })
-  );
-
-  addCartIcon = this.appconstant.productListConfig.addCartIcon;
+ 
+  cards =this.productService.cards;
+  addCartIcon = this.appconstant.productListConfig.addCartIcon; 
   removeCartIcon = this.appconstant.productListConfig.removeCartIcon;
 
-  checkInputValue(event:any) {
-    event.target.value = (event.target.value <= 0)? '' : event.target.value;
-    event.target.value = (event.target.value>15)? alert("value exceeds 15") : event.target.value;
+  checkInputValue(event:any,item) {
+    if(event.target.value <= 0){
+      event.target.value ='';
+    }else if(event.target.value>15){
+       alert("value exceeds 15");
+       event.target.value ='';
+    }else{
+      event.target.value ='';
+      this.productService.changeCartQty(this.products,this.cartItem,item, event.target.value);
+    }
   }
 
   addCart(index) {
-    this.productService.changeCartQty(this.products,index, 1);
+    const item=this.productService.changeCartQty(this.products,this.cartItem,index, 1);
+    this.productService.setCartProducts(item)
   }
 
   
   removeCart(index) {
-    this.productService.changeCartQty(this.products,index, -1);
-    console.log(this.productService.cartProducts);
+    const item=this.productService.changeCartQty(this.products,this.cartItem,index, -1);
+    this.productService.setCartProducts(item)
   }
 
   constructor(private breakpointObserver: BreakpointObserver,

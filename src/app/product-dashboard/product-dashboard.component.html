@@ -1,7 +1,7 @@
 <div class="grid-container">
-  <mat-grid-list [cols]="gridCols" rowHeight="360px">
+  <mat-grid-list *ngFor="let card of cards | async" [cols]="card.gridCols" rowHeight="360px">
     <span  *ngFor="let product of products; let i = index">
-    <mat-grid-tile *ngFor="let card of cards | async" [colspan]="card.cols" [rowspan]="card.rows">
+    <mat-grid-tile [colspan]="card.cols" [rowspan]="card.rows">
       <mat-card fxFlexFill class="dashboard-card">
         <mat-card-header>
           <mat-card-title>
@@ -12,15 +12,16 @@
           <a>
             <img mat-card-image [src]="product.image">
           </a>
-          <mat-card-subtitle>{{product.content}}</mat-card-subtitle>
+          <div *ngIf="product.cartQty!==undefined;else priceBlock">Price: {{product.price*product.cartQty}}</div>
+          <ng-template #priceBlock>Price: {{product.price}}</ng-template>
         </mat-card-content>
         <mat-card-footer>
           <span>Qty:   </span>
-            <button mat-icon-button (click)="addCart(i)">
+            <button mat-icon-button (click)="addCart(product)">
               <mat-icon>{{addCartIcon}}</mat-icon>
             </button>
-            <input class="cartQty" type="number" [(ngModel)]="product.cartQty" min="0" max="15" (keyup)="checkInputValue($event)" />
-            <button mat-icon-button (click)="removeCart(i)">
+            <input class="cartQty" type="number" [(ngModel)]="product.cartQty" min="1" max="15" (keyup)="checkInputValue($event,product)" />
+            <button mat-icon-button (click)="removeCart(product)">
               <mat-icon>{{removeCartIcon}}</mat-icon>
             </button>
         </mat-card-footer>

@@ -8,6 +8,10 @@
   left: 15px;
   right: 15px;
   bottom: 15px;
+
+  transition: none !important;
+  box-shadow: none !important;
+  background:transparent;
 }
 
 .more-button {
@@ -26,9 +30,3 @@ input.cartQty{
   border-radius:10px;
   outline: none;
 }
-
-::ng-deep .mat-card{
-  transition: none !important;
-  box-shadow: none !important;
-  background:transparent;
- }
