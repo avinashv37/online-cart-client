@@ -20,10 +20,9 @@ export class ProductCartComponent implements OnInit{
     this.cartItems= this.productService.getCartProduct();
     this.productService.sendProductRequest().subscribe((data: any[]) => {
       this.productItem = data;
-      this.productService.syncItemQty(this.cartItems,this.productItem);
       console.log(data);
     });
-
+    this.productService.syncItemQty(this.cartItems,this.productItem);
   }
 
   addProductItem(item: Product){

@@ -49,7 +49,6 @@ export class ProductDashboardComponent implements OnInit {
   
   removeCart(index) {
     const item=this.productService.changeCartQty(this.products,this.cartItem,index, -1);
-    this.productService.setCartProducts(item)
   }
 
   constructor(private breakpointObserver: BreakpointObserver,

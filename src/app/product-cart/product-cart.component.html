@@ -65,13 +65,13 @@
           </mat-card-content>
           <mat-card-subtitle *ngIf="item.price*item.cartQty>0">Price: {{item.price*item.cartQty}} </mat-card-subtitle>
           <mat-card-action class="card-product-action">
-            <button mat-icon-button (click)="addProductItem(item)">
-              <mat-icon>{{addCartIcon}}</mat-icon>
+            <button mat-raised-button (click)="addProductItem(item)">
+              <mat-icon>{{addCartIcon}}</mat-icon>Cart
             </button>
-            <input class="cartQty" type="number" [(ngModel)]="item.cartQty" min="0" />
-            <button mat-icon-button (click)="removeProductItem(item)">
+            <!-- <input class="cartQty" type="number" [(ngModel)]="item.cartQty" min="0" />
+            <button mat-icon-button (click)="removeItem(item)">
               <mat-icon>{{removeCartIcon}}</mat-icon>
-            </button>
+            </button> -->
           </mat-card-action>
         </mat-card>
       </div>

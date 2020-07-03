@@ -109,9 +109,22 @@ input.cartQty{
 }
 
 .card-product-action{
-  display: flex;
+  position: relative;
+  margin-left: 25%;
 }
 
+@media (max-width:990px) {
+.card-product-action{
+  position: relative;
+  margin-left: 5%;
+}
+}
+
+@media (max-width:900px) {
+  .card-product-action{
+    display: none;
+  }
+  }
 .card-content-cart{
   height:40%;
   padding-top:1px;
