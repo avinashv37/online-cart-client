@@ -35,7 +35,6 @@ export class ProductCartComponent implements OnInit{
 
   removeProductItem(item: Product){
     const cartItems = this.productService.changeCartQty(this.productItem,this.cartItems,item, -1);
-    this.productService.setCartProducts(cartItems);
     if(item.cartQty==undefined){
       this.ngOnInit();
     }
@@ -51,7 +50,6 @@ export class ProductCartComponent implements OnInit{
 
   removeCartItem(item: Product){
     const cartItems = this.productService.changeCartQty(this.cartItems,this.productItem,item, -1);
-    this.productService.setCartProducts(cartItems);
     if(item.cartQty==undefined){
       this.ngOnInit();
     }
