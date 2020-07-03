@@ -125,7 +125,7 @@ export class ProductService {
       
       if (item.cartQty == 0) {
         item.cartQty = undefined;
-        toItem =this.arrayRemove(this.cartProducts,item);
+        this.cartProducts =this.arrayRemove(this.cartProducts,item);
       }
       return toItem;
     }
