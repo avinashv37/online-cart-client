@@ -63,19 +63,22 @@ export class ProductService {
 
   // Syncs the cartQty of items passed
   syncItemQty(syncFrom: any, syncTo: any){
-    if(syncTo.length==0 && syncFrom!= undefined){
+    if((syncTo!= undefined && syncTo.length==0) && syncFrom!= undefined){
       syncFrom.filter(function(ele){
         if(ele.cartQty>0){
           syncTo.push(ele);
         }
       });
-    }else if(syncFrom.length==0  && syncTo!= undefined){
+    }else if((syncFrom!= undefined && syncFrom.length==0)  && syncTo!= undefined){
       syncTo.filter(function(ele){
         if(ele.cartQty>0){
           syncFrom.push(ele);
         }
       });
-    }else{
+    } else if(syncFrom==undefined || syncTo ==undefined){
+        console.log("no value in object sync from , cannot sync");
+    }
+    else {
       for (let item of syncFrom){
         syncTo.filter(function(ele){ 
             // if(ele.cartQty==undefined){
@@ -110,16 +113,19 @@ export class ProductService {
 
     if ((item.cartQty === undefined) && qty >0) {
       item.cartQty = 1;
+      if(toItem==undefined){
+        toItem=[];
+      }
       toItem.push(item);
       return toItem;
     }
      else if (item.cartQty > 0) {
       item.cartQty = item.cartQty + qty;
       this.syncItemQty(fromItem,toItem);
-
+      
       if (item.cartQty == 0) {
         item.cartQty = undefined;
-        toItem =this.arrayRemove(toItem,item);
+        toItem =this.arrayRemove(fromItem,item);
       }
       return toItem;
     }

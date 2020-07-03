@@ -12,21 +12,21 @@ import { Product } from '../shared-models/product.model';
 })
 export class ProductCartComponent implements OnInit{
 
-  cartItems;
+  cartItems=[];
 
-  productItem;
+  productItem=[];
 
   ngOnInit() {
     this.cartItems= this.productService.getCartProduct();
     this.productService.sendProductRequest().subscribe((data: any[]) => {
-      console.log(data);
       this.productItem = data;
       this.productService.syncItemQty(this.cartItems,this.productItem);
+      console.log(data);
     });
 
   }
 
-  addCartItem(item: Product){
+  addProductItem(item: Product){
     const cartItems = this.productService.changeCartQty(this.productItem,this.cartItems,item, 1);
     this.productService.setCartProducts(cartItems);
     if(item.cartQty==undefined ){
@@ -34,8 +34,7 @@ export class ProductCartComponent implements OnInit{
     }
   }
 
-
-  removeCartItem(item: Product){
+  removeProductItem(item: Product){
     const cartItems = this.productService.changeCartQty(this.productItem,this.cartItems,item, -1);
     this.productService.setCartProducts(cartItems);
     if(item.cartQty==undefined){
@@ -43,6 +42,21 @@ export class ProductCartComponent implements OnInit{
     }
   }
 
+  addCartItem(item: Product){
+    const cartItems = this.productService.changeCartQty(this.cartItems,this.productItem,item, 1);
+    this.productService.setCartProducts(cartItems);
+    if(item.cartQty==undefined ){
+      this.ngOnInit();
+    }
+  }
+
+  removeCartItem(item: Product){
+    const cartItems = this.productService.changeCartQty(this.cartItems,this.productItem,item, -1);
+    this.productService.setCartProducts(cartItems);
+    if(item.cartQty==undefined){
+      this.ngOnInit();
+    }
+  }
 addCartIcon = this.appconstant.productListConfig.addCartIcon; 
 removeCartIcon = this.appconstant.productListConfig.removeCartIcon;
 
