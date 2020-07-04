@@ -12,6 +12,7 @@ export class Product implements Desirializable{
     public price:number;
     public stock:boolean;
     public cartQty:number;
+    public suggested:boolean;
 
 
     deserialize(input: any): this {

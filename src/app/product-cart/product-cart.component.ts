@@ -18,34 +18,15 @@ export class ProductCartComponent implements OnInit{
 
   ngOnInit() {
     this.cartItems= this.productService.getCartProduct();
-    this.productService.sendProductRequest().subscribe((data: any[]) => {
+    this.productService.sendProductRequest().subscribe((data: Product[]) => {
       this.productItem = data;
       console.log(data);
+      this.productService.syncItemQty(this.cartItems,this.productItem);
     });
-    this.productService.syncItemQty(this.cartItems,this.productItem);
-  }
-
-  addProductItem(item: Product){
-    const cartItems = this.productService.changeCartQty(this.productItem,this.cartItems,item, 1);
-    this.productService.setCartProducts(cartItems);
-    if(item.cartQty==undefined ){
-      this.ngOnInit();
-    }
-  }
-
-  removeProductItem(item: Product){
-    const cartItems = this.productService.changeCartQty(this.productItem,this.cartItems,item, -1);
-    if(item.cartQty==undefined){
-      this.ngOnInit();
-    }
   }
 
   addCartItem(item: Product){
-    const cartItems = this.productService.changeCartQty(this.cartItems,this.productItem,item, 1);
-    this.productService.setCartProducts(cartItems);
-    if(item.cartQty==undefined ){
-      this.ngOnInit();
-    }
+    const cartItems = this.productService.changeCartQty(this.productItem,this.cartItems,item, 1);
   }
 
   removeCartItem(item: Product){
@@ -63,13 +44,20 @@ removeCartIcon = this.appconstant.productListConfig.removeCartIcon;
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(event.previousContainer.data,
+      if(!event.previousContainer.data.productId==event.container.data.productId){
+        transferArrayItem(event.previousContainer.data,
           event.container.data,
           event.previousIndex,
           event.currentIndex);
-      container=event.container.element.nativeElement.getAttribute('aria-label')
-      this.addCartData(event.container.data[event.currentIndex],container);
-
+        container=event.container.element.nativeElement.getAttribute('aria-label')
+        this.addCartData(event.container.data[event.currentIndex],container);
+      }else if(event.container.element.nativeElement.getAttribute('aria-label')=='cart'){
+        this.addCartItem(event.previousContainer.data[event.previousIndex]);
+      }else{
+        const product = event.previousContainer.data[event.previousIndex];
+        this.productService.changeCartQty(this.cartItems,this.productItem,product,-1*product.cartQty)
+        this.removeCartItem(event.previousContainer.data[event.previousIndex]);
+      }
     }
   }
   addCartData(item: any,ariaLabel:String){

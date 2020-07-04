@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
+import { exit } from 'process';
 @Injectable({
   providedIn: 'root'
 })
@@ -95,29 +96,24 @@ export class ProductService {
     }
   }
 
-  changeCartItem(product: Product[],item: Product, count: number){
-    let checkedItem=this.arrayChangeCheck(this.cartProducts,item,count);
-    if(checkedItem.length==0 && count >0){
-      item.cartQty=1;
-      this.cartProducts.push(item);
-    }else if(checkedItem.length==0 && count<0){
-      item.cartQty=undefined;
-      this.cartProducts =this.arrayRemove(this.cartProducts,item);
-    }
-  }
-
   changeCartQty(fromItem, toItem, item: Product, qty: number) {
     if(true && item.cartQty>=15 && qty >0){
       return item.cartQty;
     }
+    const check=this.arrayExistCheck(toItem,item)
 
     if ((item.cartQty === undefined) && qty >0) {
-      item.cartQty = 1;
-      if(toItem==undefined){
-        toItem=[];
+
+      if(check.length!=0){
+        this.changeCartQty(fromItem, toItem,check[0],qty);
+      }else{
+        item.cartQty = 1;
+        if(toItem==undefined){
+          toItem=[];
+        }
+        toItem.push(item);
+        return toItem;
       }
-      toItem.push(item);
-      return toItem;
     }
      else if (item.cartQty > 0) {
       item.cartQty = item.cartQty + qty;
@@ -136,10 +132,9 @@ export class ProductService {
       return ele.productId != value.productId && value.cartQty==undefined; });
  }
 
- arrayChangeCheck(arr, value,count:number) {
+ arrayExistCheck(arr, value) {
   return arr.filter(function(ele){ 
     if( ele.productId == value.productId){
-      ele.cartQty=ele.cartQty+count;
       return value;
     }
   });
@@ -149,8 +144,8 @@ export class ProductService {
   //   this.getProductObs().subscribe(products => this.products =  products);
   // }
 
-    /** Based on the screen size, switch from standard to one column per row */
-
+  /** Based on the screen size, switch from standard to one column per row */
+  /** TODO:currently only used in Dashbpard page needs to be extended to make it senderable in other pages using config */
   cards = this.breakpointObserver.observe([Breakpoints.Handset,Breakpoints.Small,Breakpoints.XSmall,
     Breakpoints.Medium,Breakpoints.Large,Breakpoints.XLarge]).pipe(
     map(({ matches }) => {

@@ -145,12 +145,12 @@ input.cartQty{
 }
 
 .card-action-cart {
-  margin-top: 2%;
-  
+  margin-top: 4%;
+  margin-right: 4%;
   /* needed styles below */
   flex-flow: row;
 }
 
-.back-spacer {
-  flex: 1 1 auto;
+.checkout-button {
+  margin-top: 1% ;
 }

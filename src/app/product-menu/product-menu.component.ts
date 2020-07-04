@@ -14,7 +14,7 @@ import { MenuConstants } from '../app-constants/appConstants';
 export class ProductMenuComponent {
 
   themeColor = '';
-
+  searchItem='';
   isHandset$: Observable<boolean> = this.breakpointObserver.observe(Breakpoints.Handset)
     .pipe(
       map(result => result.matches),

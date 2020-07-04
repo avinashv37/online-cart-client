@@ -1,9 +1,9 @@
 <div class="grid-container">
-  <div class="container-cart">
+  <div class="container-cart" >
     <h2>Cart</h2>
 
     <div cdkDropList #productList="cdkDropList" [cdkDropListData]="cartItems" [cdkDropListConnectedTo]="cartList"
-      class="list-cart" (cdkDropListDropped)="drop($event)" aria-label="cart">
+      class="list-cart" (cdkDropListDropped)="drop($event)" aria-label="cart" >
       <div class="list-item-cart" *ngFor="let item of cartItems; let i = index" cdkDrag>
         <mat-card class="card-cart">
           <mat-card-content class="card-content-cart">
@@ -21,13 +21,6 @@
             </div>
             <div class ='back-spacer'></div>
             <div>
-              <mat-card-subtitle>test................................</mat-card-subtitle>
-              <mat-card-subtitle>test................................</mat-card-subtitle>
-            </div>
-          </mat-card-content>
-          <mat-card-action class="card-action-cart">
-            <mat-card-subtitle>Price: {{item.price*item.cartQty}} </mat-card-subtitle>  
-            <mat-card-subtitle>
               <button mat-icon-button (click)="addCartItem(item)">
                 <mat-icon>{{addCartIcon}}</mat-icon>
               </button>
@@ -35,15 +28,20 @@
               <button mat-icon-button (click)="removeCartItem(item)" >
                 <mat-icon>{{removeCartIcon}}</mat-icon>
               </button>
-            </mat-card-subtitle>
+            </div>
+          </mat-card-content>
+          <mat-card-action class="card-action-cart">
+            <mat-card-subtitle>Price: {{item.price*item.cartQty}}</mat-card-subtitle>  
           </mat-card-action>
         </mat-card>
       </div>
     </div>
-    <div class="back-spacer"></div>
-    <button color="primary" mat-raised-button>
-      CheckOut
-    </button>
+    <div class="checkout-button">
+      <button  mat-raised-button  color="primary" matTooltip="Tooltips in Angular">
+        CheckOut
+      </button>
+      Total : 
+    </div>
   </div>
   <div class="container-product">
     <h2>Products</h2>
@@ -65,7 +63,10 @@
           </mat-card-content>
           <mat-card-subtitle *ngIf="item.price*item.cartQty>0">Price: {{item.price*item.cartQty}} </mat-card-subtitle>
           <mat-card-action class="card-product-action">
-            <button mat-raised-button (click)="addProductItem(item)">
+            <button mat-raised-button
+            [matBadge]="item.cartQty"
+            matBadgePosition="before" 
+            matBadgeColor="primary" (click)="addCartItem(item)" >
               <mat-icon>{{addCartIcon}}</mat-icon>Cart
             </button>
             <!-- <input class="cartQty" type="number" [(ngModel)]="item.cartQty" min="0" />
