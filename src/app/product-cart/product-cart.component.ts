@@ -18,15 +18,19 @@ export class ProductCartComponent implements OnInit{
 
   ngOnInit() {
     this.cartItems= this.productService.getCartProduct();
-    this.productService.sendProductRequest().subscribe((data: Product[]) => {
+    this.productService.sendProductRequest().subscribe((data: any[]) => {
       this.productItem = data;
       console.log(data);
       this.productService.syncItemQty(this.cartItems,this.productItem);
     });
   }
 
-  addCartItem(item: Product){
+  addProductItem(item: Product){
     const cartItems = this.productService.changeCartQty(this.productItem,this.cartItems,item, 1);
+  }
+
+  addCartItem(item: Product){
+    const cartItems = this.productService.changeCartQty(this.cartItems,this.productItem,item, 1);
   }
 
   removeCartItem(item: Product){

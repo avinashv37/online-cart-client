@@ -25,7 +25,7 @@ export class ProductDashboardComponent implements OnInit {
   }
   
  
-  cards =this.productService.cards;
+  cards =this.productService.layout;
   addCartIcon = this.appconstant.productListConfig.addCartIcon; 
   removeCartIcon = this.appconstant.productListConfig.removeCartIcon;
 

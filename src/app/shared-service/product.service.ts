@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { Product } from '../shared-models/product.model';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { map } from 'rxjs/operators';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { exit } from 'process';
+import { UtilityService } from './utility.service';
 @Injectable({
   providedIn: 'root'
 })
@@ -13,8 +14,11 @@ export class ProductService {
 
   products: Array<Product>;
   cartProducts:Product[];
+  layout=this.utility.layout;
 
-  constructor(private httpClient: HttpClient,private breakpointObserver: BreakpointObserver) {  
+  constructor(private httpClient: HttpClient,
+    private breakpointObserver: BreakpointObserver,
+    private utility:UtilityService) {  
     this.cartProducts=[];
    }
 
@@ -143,30 +147,5 @@ export class ProductService {
   // public getAllProducts(){
   //   this.getProductObs().subscribe(products => this.products =  products);
   // }
-
-  /** Based on the screen size, switch from standard to one column per row */
-  /** TODO:currently only used in Dashbpard page needs to be extended to make it senderable in other pages using config */
-  cards = this.breakpointObserver.observe([Breakpoints.Handset,Breakpoints.Small,Breakpoints.XSmall,
-    Breakpoints.Medium,Breakpoints.Large,Breakpoints.XLarge]).pipe(
-    map(({ matches }) => {
-      const isHandset = this.breakpointObserver.isMatched(Breakpoints.Handset)
-      const isMedium = this.breakpointObserver.isMatched(Breakpoints.Medium);
-      const isXSmall = this.breakpointObserver.isMatched(Breakpoints.XSmall);
-      const isSmall = this.breakpointObserver.isMatched(Breakpoints.Small);
-      const isLarge = this.breakpointObserver.isMatched(Breakpoints.Large);
-
-      if (isSmall) {
-        return [{ cols: 2, rows: 1, gridCols: 6 }]
-      }else if(isHandset || isXSmall){
-        return [{ cols: 3, rows: 1, gridCols: 6 }]
-      }else if(isMedium){
-        return [{ cols: 1, rows: 1, gridCols: 4 }]
-      }else if (isLarge){
-        return [{ cols: 1, rows: 1, gridCols: 5 }];
-      }else{
-        return [{ cols: 1, rows: 1, gridCols: 6 }];
-      }
-    })
-  );
 
 }
