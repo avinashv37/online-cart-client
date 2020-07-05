@@ -16,29 +16,32 @@ export class UtilityService {
   display:Display;
   border = new Layout();
   large:string;
+  isHandset:boolean;isMedium:boolean;isXSmall:boolean;isSmall:boolean;
+  isLarge:boolean;isXLarge:boolean;
+
   layout = this.breakpointObserver.observe([Breakpoints.Handset,Breakpoints.Small,Breakpoints.XSmall,
     Breakpoints.Medium,Breakpoints.Large,Breakpoints.XLarge]).pipe(
     map(({ matches }) => {
-      const isHandset = this.breakpointObserver.isMatched(Breakpoints.Handset)
-      const isMedium = this.breakpointObserver.isMatched(Breakpoints.Medium);
-      const isXSmall = this.breakpointObserver.isMatched(Breakpoints.XSmall);
-      const isSmall = this.breakpointObserver.isMatched(Breakpoints.Small);
-      const isLarge = this.breakpointObserver.isMatched(Breakpoints.Large);
-      const isXLarge = this.breakpointObserver.isMatched(Breakpoints.XLarge);
+      this.isHandset = this.breakpointObserver.isMatched(Breakpoints.Handset)
+      this.isMedium = this.breakpointObserver.isMatched(Breakpoints.Medium);
+      this.isXSmall = this.breakpointObserver.isMatched(Breakpoints.XSmall);
+      this.isSmall = this.breakpointObserver.isMatched(Breakpoints.Small);
+      this.isLarge = this.breakpointObserver.isMatched(Breakpoints.Large);
+      this.isXLarge = this.breakpointObserver.isMatched(Breakpoints.XLarge);
 
-      if (isSmall) {
+      if (this.isSmall) {
         const obj=JSON.parse(this.border.getSmall());
         return [obj];
-      }else if(isHandset || isXSmall){
+      }else if(this.isHandset || this.isXSmall){
         const obj=JSON.parse(this.border.getXSmall());
         return [obj];
-      }else if(isMedium){
+      }else if(this.isMedium){
         const obj=JSON.parse(this.border.getMedium());
         return [obj];
-      }else if (isLarge){
+      }else if (this.isLarge){
         const obj=JSON.parse(this.border.getLarge());
         return [obj];
-      }else if (isXLarge){
+      }else if (this.isXLarge){
         const obj=JSON.parse(this.border.getXLarge());
         return [obj];
       }else{
