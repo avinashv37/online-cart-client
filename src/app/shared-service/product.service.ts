@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse} from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Product } from '../shared-models/product.model';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { throwError } from 'rxjs/internal/observable/throwError';
@@ -11,30 +11,30 @@ import { UtilityService } from './utility.service';
   providedIn: 'root'
 })
 export class ProductService {
-
   products: Array<Product>;
   cartProducts:Product[];
-  layout=this.utility.layout;
+  util = this.utility;
+  layout = this.utility.layout;
 
   constructor(private httpClient: HttpClient,
     private breakpointObserver: BreakpointObserver,
-    private utility:UtilityService) {  
-    this.cartProducts=[];
-   }
-
-  setProducts(product: Product[]){
-    this.products=product;
+    private utility: UtilityService) {
+    this.cartProducts = [];
   }
 
-  getProduct(){
+  setProducts(product: Product[]) {
+    this.products = product;
+  }
+
+  getProduct() {
     return this.products;
   }
 
-  setCartProducts(cartProducts: Product[]){
-    this.cartProducts=cartProducts;
+  setCartProducts(cartProducts: Product[]) {
+    this.cartProducts = cartProducts;
   }
 
-  getCartProduct(){
+  getCartProduct() {
     return this.cartProducts;
   }
 
@@ -52,17 +52,17 @@ export class ProductService {
   }
 
   public sendProductRequest() {
-    const REST_API =`http://localhost:3000/products`;
+    const REST_API = `http://localhost:3000/products`;
     return this.httpClient.get(REST_API)
-    .pipe(map((data: Product[]) => {
-      return data;
-    }),catchError(this.handleError));
+      .pipe(map((data: Product[]) => {
+        return data;
+      }), catchError(this.handleError));
   }
 
-  public fetchProducts(): any{
+  public fetchProducts(): any {
     this.sendProductRequest().subscribe((data: Product[]) => {
       console.log(data);
-      this.products = data;   
+      this.products = data;
     });
   }
 
@@ -108,7 +108,7 @@ export class ProductService {
 
     if ((item.cartQty === undefined) && qty >0) {
 
-      if(check.length!=0){
+      if(check.length!=0 && check.cartQty != undefined ){
         this.changeCartQty(fromItem, toItem,check[0],qty);
       }else{
         item.cartQty = 1;
@@ -130,7 +130,7 @@ export class ProductService {
       return toItem;
     }
   }
-  
+
   arrayRemove(arr, value) {
     return arr.filter(function(ele){ 
       return ele.productId != value.productId && value.cartQty==undefined; });

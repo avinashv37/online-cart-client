@@ -10,8 +10,18 @@ export class Product implements Desirializable{
     public productType:string;
     public image:string;
     public price:number;
+    public totalPrice:number;
     public stock:boolean;
     public cartQty:number;
+
+
+    public getCartQty(): number {
+        return this.cartQty;
+    }
+
+    public setCartQty(cartQty: number): void {
+        this.cartQty = cartQty;
+    }
     public suggested:boolean;
 
 

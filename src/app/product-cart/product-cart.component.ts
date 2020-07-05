@@ -1,4 +1,4 @@
-import { Component,ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { MenuConstants } from '../app-constants/appConstants';
@@ -10,69 +10,70 @@ import { Product } from '../shared-models/product.model';
   templateUrl: './product-cart.component.html',
   styleUrls: ['./product-cart.component.scss'],
 })
-export class ProductCartComponent implements OnInit{
+export class ProductCartComponent implements OnInit {
 
-  cartItems=[];
+  cartItems = [];
 
-  productItem=[];
+  productItem = [];
+  addCartIcon = this.appconstant.productListConfig.addCartIcon;
+  removeCartIcon = this.appconstant.productListConfig.removeCartIcon;
 
   ngOnInit() {
-    this.cartItems= this.productService.getCartProduct();
+    this.cartItems = this.productService.getCartProduct();
     this.productService.sendProductRequest().subscribe((data: any[]) => {
       this.productItem = data;
       console.log(data);
-      this.productService.syncItemQty(this.cartItems,this.productItem);
+      this.productService.syncItemQty(this.cartItems, this.productItem);
     });
   }
 
-  addProductItem(item: Product){
-    const cartItems = this.productService.changeCartQty(this.productItem,this.cartItems,item, 1);
+  addProductItem(item: Product) {
+    const cartItems = this.productService.changeCartQty(this.productItem, this.cartItems, item, 1);
   }
 
-  addCartItem(item: Product){
-    const cartItems = this.productService.changeCartQty(this.cartItems,this.productItem,item, 1);
+  addCartItem(item: Product) {
+    const cartItems = this.productService.changeCartQty(this.cartItems, this.productItem, item, 1);
   }
 
-  removeCartItem(item: Product){
-    const cartItems = this.productService.changeCartQty(this.cartItems,this.productItem,item, -1);
-    if(item.cartQty==undefined){
+  removeCartItem(item: Product) {
+    const cartItems = this.productService.changeCartQty(this.cartItems, this.productItem, item, -1);
+    if (item.cartQty == undefined) {
       this.ngOnInit();
     }
   }
-addCartIcon = this.appconstant.productListConfig.addCartIcon; 
-removeCartIcon = this.appconstant.productListConfig.removeCartIcon;
 
   drop(event: any) {
-    let container:String;
-   
+    let container: String;
+
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      if(!event.previousContainer.data.productId==event.container.data.productId){
+      if (!event.previousContainer.data.productId == event.container.data.productId) {
         transferArrayItem(event.previousContainer.data,
           event.container.data,
           event.previousIndex,
           event.currentIndex);
-        container=event.container.element.nativeElement.getAttribute('aria-label')
-        this.addCartData(event.container.data[event.currentIndex],container);
-      }else if(event.container.element.nativeElement.getAttribute('aria-label')=='cart'){
+        container = event.container.element.nativeElement.getAttribute('aria-label')
+        this.addCartData(event.container.data[event.currentIndex], container);
+      } else if (event.container.element.nativeElement.getAttribute('aria-label') == 'cart') {
         this.addCartItem(event.previousContainer.data[event.previousIndex]);
-      }else{
+      } else {
         const product = event.previousContainer.data[event.previousIndex];
-        this.productService.changeCartQty(this.cartItems,this.productItem,product,-1*product.cartQty)
+        this.productService.changeCartQty(this.cartItems, this.productItem, product, -1 * product.cartQty)
         this.removeCartItem(event.previousContainer.data[event.previousIndex]);
       }
     }
   }
-  addCartData(item: any,ariaLabel:String){
-    if(ariaLabel=='cart' && item.cartQty ==undefined){
-      item.cartQty=1;
-   }
-   else if(ariaLabel=='cart' && item.cartQty >0){
-    item.cartQty =item.cartQty;
-   }
-    else{
-      item.cartQty=undefined;
+
+  addCartData(item: any, ariaLabel: String) {
+    if (ariaLabel == 'cart' && item.cartQty == undefined) {
+      item.cartQty = 1;
+    }
+    else if (ariaLabel == 'cart' && item.cartQty > 0) {
+      item.cartQty = item.cartQty;
+    }
+    else {
+      item.cartQty = undefined;
     }
   }
 
