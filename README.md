@@ -25,3 +25,8 @@ Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protrac
 ## Further help
 
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+
+## Notes
+Per user logic has not yet been implemented.
+
+Online web pages are currently coded without any cache's and can be added as and when needed (introduced to implement caches per user). currenlty ever routing object gets synched.
