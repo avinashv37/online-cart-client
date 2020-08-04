@@ -12,18 +12,28 @@
           <a>
             <img mat-card-image [src]="product.image">
           </a>
-          <div *ngIf="product.cartQty!==undefined;else priceBlock">Price: {{product.price*product.cartQty}}</div>
+          <div *ngIf="product.cartQty!=undefined ||product.cartQty=='' ;else priceBlock">Price: {{product.totalPrice}}</div>
           <ng-template #priceBlock>Price: {{product.price}}</ng-template>
         </mat-card-content>
-        <mat-card-footer>
-          <span>Qty:   </span>
+        <mat-card-footer class="dashboard-card-footer" fxLayoutAlign="center">
+          <div *ngIf="product.cartQty!=undefined ||product.cartQty=='' ;else cartBlock">
+          <!-- <span>Qty:   </span> -->
             <button mat-icon-button (click)="addCart(product)">
               <mat-icon>{{addCartIcon}}</mat-icon>
             </button>
-            <input class="cartQty" type="number" [(ngModel)]="product.cartQty" min="1" max="15" (keyup)="checkInputValue($event,product)" />
+            <input class="cartQty" type="number" [(ngModel)]="product.cartQty" min="1" max="15"  (keydown)="checkInputValue($event,product)" />
             <button mat-icon-button (click)="removeCart(product)">
               <mat-icon>{{removeCartIcon}}</mat-icon>
             </button>
+          </div>
+          <ng-template #cartBlock>
+            <button mat-raised-button
+            [matBadge]="product.cartQty"
+            matBadgePosition="before" 
+            matBadgeColor="primary" (click)="addCart(product)" >
+              <mat-icon>{{addCartIcon}}</mat-icon>Cart
+            </button>
+          </ng-template>
         </mat-card-footer>
       </mat-card>
     </mat-grid-tile>

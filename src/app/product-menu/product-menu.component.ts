@@ -33,8 +33,12 @@ export class ProductMenuComponent {
     this.componentCssClass = theme;
   }
 
-   urlToggle(link: String)  {
-    this.router.navigate([link]);
+   urlToggle(link: string,stateJson?:JSON)  {
+     if(stateJson==undefined){
+      this.router.navigate([link]);}
+    else{
+      this.router.navigateByUrl(link, { state: { stateJson } });
+    }
   }
 
   clickHandler(item: string) {
@@ -42,7 +46,7 @@ export class ProductMenuComponent {
   }
   
   webTitle='';
-  webImage='../assets/Organic_Logo.png';
+  webImage='https://storage.cloud.google.com/organic-origin-images/main/logo.png';
   webImageCss={
     'height':'120px', 'width':'160px'
   }

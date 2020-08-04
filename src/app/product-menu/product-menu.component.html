@@ -26,22 +26,14 @@
 
       <!-- Search bar -->
       <div class="md-toolbar-tools menu-space search-bar">
-
-        
-
         <!-- Input Text -->
         <mat-form-field appearance="fill" class="search-full-width">
           <!-- <label for="search">Search</label> -->
-          <button mat-icon-button >
+          <input matInput type="text" [(ngModel)]="searchItem" />
+          <button matSuffix (click)="urlToggle('/product-dashboard',{search:searchItem})" mat-icon-button >
             <mat-icon>search</mat-icon>
           </button>
-          <input matInput  type="text" [ngModel]="searchItem" />
-          <button mat-icon-button >
-            <mat-icon>close</mat-icon>
-          </button>
         </mat-form-field>
-
-        
       </div>
 
       <button mat-icon-button class="web-title" (click)="urlToggle('/product-dashboard')" *ngIf='webTitle.length>0' >

@@ -9,7 +9,6 @@ import { Layout } from '../shared-models/layout.model';
 })
 export class UtilityService {
 
-  constructor(private breakpointObserver: BreakpointObserver) { }
 /** Based on the screen size, switch from standard to one column per row */
   /** TODO:currently only used in Dashbpard page needs to be extended to make it senderable in other pages using config */
   
@@ -18,6 +17,16 @@ export class UtilityService {
   large:string;
   isHandset:boolean;isMedium:boolean;isXSmall:boolean;isSmall:boolean;
   isLarge:boolean;isXLarge:boolean;
+  private maxQty:number;
+
+    public getMaxQty(): number {
+      if(this.maxQty!=null){this.maxQty=15}
+        return this.maxQty;
+    }
+
+    public setMaxQty(maxQty: number): void {
+        this.maxQty = maxQty;
+    }
 
   layout = this.breakpointObserver.observe([Breakpoints.Handset,Breakpoints.Small,Breakpoints.XSmall,
     Breakpoints.Medium,Breakpoints.Large,Breakpoints.XLarge]).pipe(
@@ -50,5 +59,7 @@ export class UtilityService {
       }
     })
   );
+
+  constructor(private breakpointObserver: BreakpointObserver) { }
 
 }

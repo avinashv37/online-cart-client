@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { MenuConstants } from '../app-constants/appConstants';
 import { ProductService } from '../shared-service/product.service';
 import { Product } from '../shared-models/product.model';
@@ -12,31 +11,32 @@ import { Product } from '../shared-models/product.model';
 })
 export class ProductCartComponent implements OnInit {
 
-  cartItems = [];
-
-  productItem = [];
+  cartItems = Array<Product>();
+  productItem = Array<Product>();
   addCartIcon = this.appconstant.productListConfig.addCartIcon;
   removeCartIcon = this.appconstant.productListConfig.removeCartIcon;
-
+  total;
   ngOnInit() {
-    this.cartItems = this.productService.getCartProduct();
+    this.cartItems = this.productService.getCartProducts();
     this.productService.sendProductRequest().subscribe((data: any[]) => {
       this.productItem = data;
-      console.log(data);
       this.productService.syncItemQty(this.cartItems, this.productItem);
     });
   }
 
   addProductItem(item: Product) {
     const cartItems = this.productService.changeCartQty(this.productItem, this.cartItems, item, 1);
+    this.total=this.productService.total;
   }
 
   addCartItem(item: Product) {
     const cartItems = this.productService.changeCartQty(this.cartItems, this.productItem, item, 1);
+    this.total=this.productService.total;
   }
 
   removeCartItem(item: Product) {
     const cartItems = this.productService.changeCartQty(this.cartItems, this.productItem, item, -1);
+    this.total=this.productService.total;
     if (item.cartQty == undefined) {
       this.ngOnInit();
     }
@@ -56,7 +56,11 @@ export class ProductCartComponent implements OnInit {
         container = event.container.element.nativeElement.getAttribute('aria-label')
         this.addCartData(event.container.data[event.currentIndex], container);
       } else if (event.container.element.nativeElement.getAttribute('aria-label') == 'cart') {
-        this.addCartItem(event.previousContainer.data[event.previousIndex]);
+        if(event.previousContainer.data[event.previousIndex].cartQty===undefined){
+          this.addProductItem(event.previousContainer.data[event.previousIndex]);
+        }else{
+          this.addCartItem(event.previousContainer.data[event.previousIndex]);
+        }
       } else {
         const product = event.previousContainer.data[event.previousIndex];
         this.productService.changeCartQty(this.cartItems, this.productItem, product, -1 * product.cartQty)
@@ -77,7 +81,7 @@ export class ProductCartComponent implements OnInit {
     }
   }
 
-  constructor(private breakpointObserver: BreakpointObserver,
+  constructor(
     private appconstant: MenuConstants,
     private productService: ProductService) { }
 }

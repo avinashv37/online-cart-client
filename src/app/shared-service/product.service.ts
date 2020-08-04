@@ -1,26 +1,26 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Product } from '../shared-models/product.model';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { throwError } from 'rxjs/internal/observable/throwError';
 import { map } from 'rxjs/operators';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
-import { exit } from 'process';
 import { UtilityService } from './utility.service';
+import { Order } from '../shared-models/order.model';
+import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
+
+// key that is used to access the data in local storageconst 
+const STORAGE_KEY = 'local_cart';
 @Injectable({
   providedIn: 'root'
 })
+
 export class ProductService {
-  products: Array<Product>;
-  cartProducts:Product[];
+  products: Array<Product>= new Array();
+  cartProducts:Array<Product>= new Array();
+  order = new Order();
+  total:number=0;
   util = this.utility;
   layout = this.utility.layout;
-
-  constructor(private httpClient: HttpClient,
-    private breakpointObserver: BreakpointObserver,
-    private utility: UtilityService) {
-    this.cartProducts = [];
-  }
 
   setProducts(product: Product[]) {
     this.products = product;
@@ -31,13 +31,15 @@ export class ProductService {
   }
 
   setCartProducts(cartProducts: Product[]) {
+    this.storage.set(STORAGE_KEY,cartProducts);
     this.cartProducts = cartProducts;
   }
 
-  getCartProduct() {
+  getCartProducts() {
+    this.storage.get(STORAGE_KEY);
     return this.cartProducts;
   }
-
+  
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unknown error!';
     if (error.error instanceof ErrorEvent) {
@@ -51,19 +53,17 @@ export class ProductService {
     return throwError(errorMessage);
   }
 
-  public sendProductRequest() {
-    const REST_API = `http://localhost:3000/products`;
+  public sendProductRequest(search?:string) {
+    let REST_API='';
+    if(search==undefined || search==''){
+      REST_API = 'http://localhost:3000/products';}
+    else{
+      REST_API = 'http://localhost:3000/searchProducts/'+search;}
+
     return this.httpClient.get(REST_API)
       .pipe(map((data: Product[]) => {
         return data;
       }), catchError(this.handleError));
-  }
-
-  public fetchProducts(): any {
-    this.sendProductRequest().subscribe((data: Product[]) => {
-      console.log(data);
-      this.products = data;
-    });
   }
 
   // Syncs the cartQty of items passed
@@ -84,29 +84,33 @@ export class ProductService {
         console.log("no value in object sync from , cannot sync");
     }
     else {
-      for (let item of syncFrom){
+      for (var index in syncFrom){
+        let item = syncFrom[index]
         syncTo.filter(function(ele){ 
-            // if(ele.cartQty==undefined){
-            //   ele.cartQty=0;
-            // }
-            if(ele.productId == item.productId && ele.cartQty == undefined){
+            if(ele.productId == item.productId && ele.cartQty == undefined 
+              && item.cartQty!=undefined || ele.productId == item.productId ){
               ele.cartQty =item.cartQty;
+              ele.totalPrice=item.totalPrice;
+              if(ele.cartQty==null){
+                console.log(ele);
+                syncFrom.splice(index,1);
+              }
+
             }
-            else if(ele.productId == item.productId &&  item.cartQty!=undefined){
-            ele.cartQty=item.cartQty;
-            }
-        })
+        });
       }
     }
+    this.total=this.order.getTotal();
   }
 
   changeCartQty(fromItem, toItem, item: Product, qty: number) {
-    if(true && item.cartQty>=15 && qty >0){
-      return item.cartQty;
+    if(true && item.cartQty>=this.util.getMaxQty() && qty >0){
+      console.log("max quantity of items set to :"+this.util.getMaxQty())
+      return;
     }
     const check=this.arrayExistCheck(toItem,item)
 
-    if ((item.cartQty === undefined) && qty >0) {
+    if ((item.cartQty === undefined || item.cartQty ==null) && qty >0) {
 
       if(check.length!=0 && check.cartQty != undefined ){
         this.changeCartQty(fromItem, toItem,check[0],qty);
@@ -116,18 +120,40 @@ export class ProductService {
           toItem=[];
         }
         toItem.push(item);
-        return toItem;
       }
     }
      else if (item.cartQty > 0) {
       item.cartQty = item.cartQty + qty;
       this.syncItemQty(fromItem,toItem);
       
-      if (item.cartQty == 0) {
+      if (item.cartQty == 0 || item.cartQty ==null) {
         item.cartQty = undefined;
-        this.cartProducts =this.arrayRemove(this.cartProducts,item);
+        this.setCartProducts(this.arrayRemove(this.getCartProducts(),item));
       }
-      return toItem;
+    }
+  
+    item.totalPrice=item.cartQty*item.price;
+    if(!isNaN(this.order.getTotal())){
+      this.total=this.order.getTotal()
+    }
+    this.total=item.price+this.total;
+    this.order.setTotal(this.total);
+    this.order.setCart(this.getCartProducts());
+    console.log("total:"+this.total+"|"+this.order.getTotal())
+  }
+    
+
+  checkInputValue(event: any, item) {
+    const targetVal:number= event.target.value+event.key;
+    if (targetVal <= 0) {
+      event.target.value = '';
+    } else if (targetVal > 15) {
+      alert("value exceeds 15");
+      this.changeCartQty(this.products,this.getCartProducts(),item, -1*event.target.value);
+      // event.target.value = '';
+    } else {
+      event.target.value = '';
+      this.changeCartQty(this.products, this.getCartProducts(), item, event.target.value);
     }
   }
 
@@ -144,8 +170,9 @@ export class ProductService {
   });
 }
 
-  // public getAllProducts(){
-  //   this.getProductObs().subscribe(products => this.products =  products);
-  // }
+constructor(private httpClient: HttpClient,
+  private utility: UtilityService,@Inject(LOCAL_STORAGE) private storage: StorageService) {
+  this.cartProducts = [];
+}
 
 }

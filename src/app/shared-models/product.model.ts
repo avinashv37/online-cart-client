@@ -1,8 +1,8 @@
 import {Desirializable} from './desirializable.model'
 
-export class Product implements Desirializable{
+export class Product implements Desirializable{s
     public name:string;
-    public productId:number;
+    public productId:String;
     public category:string;
     public content:string;
     public offer:string;

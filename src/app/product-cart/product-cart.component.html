@@ -23,14 +23,14 @@
               <button mat-icon-button (click)="addCartItem(item)">
                 <mat-icon>{{addCartIcon}}</mat-icon>
               </button>
-              <input class="cartQty" type="number" [(ngModel)]="item.cartQty" min="0" />
+              <input class="cartQty" type="number" [(ngModel)]="item.cartQty" min="0" max="15" (keydown)="false"/>
               <button mat-icon-button (click)="removeCartItem(item)" >
                 <mat-icon>{{removeCartIcon}}</mat-icon>
               </button>
             </div>
           </mat-card-content>
           <mat-card-action class="card-action-cart" >
-            <mat-card-subtitle>Price: {{item.price*item.cartQty}}</mat-card-subtitle>  
+            <mat-card-subtitle>Price: {{item.totalPrice}}</mat-card-subtitle>  
           </mat-card-action>
         </mat-card>
       </div>
@@ -39,7 +39,7 @@
       <button  mat-raised-button  color="primary" matTooltip="Tooltips in Angular">
         CheckOut
       </button>
-      <span class="back-spacer">Total : </span>
+      <span class="back-spacer">Total : {{total}} </span>
     </div>
   </div>
   <div class="container-product">
@@ -60,7 +60,7 @@
             </a>
             <mat-card-subtitle>{{item.content}}</mat-card-subtitle>
           </mat-card-content>
-          <mat-card-subtitle *ngIf="item.price*item.cartQty>0">Price: {{item.price*item.cartQty}} </mat-card-subtitle>
+          <mat-card-subtitle *ngIf="item.totalPrice>0">Price: {{item.price}} </mat-card-subtitle>
           <mat-card-action class="card-product-action">
             <button mat-raised-button
             [matBadge]="item.cartQty"
